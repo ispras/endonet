@@ -1,0 +1,6 @@
+images_lists:
+- dataset/endonuke_data/images.txt
+- dataset/staining_ds/images.txt
+labels_lists:
+- dataset/endonuke_data/labels.txt
+- dataset/staining_ds/labels.txt

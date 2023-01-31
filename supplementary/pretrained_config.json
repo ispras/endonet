@@ -1,0 +1,173 @@
+{
+    "model": {
+        "runner": "HeatmapDetectionRunner",
+        "model_name": "HeatmapDetector",
+        "model_kwargs": {
+            "backbone": "UnetPlusPlus",
+            "encoder_name": "resnet50",
+            "encoder_depth": 5,
+            "encoder_weights": "imagenet",
+            "in_channels": 3,
+            "classes": 2,
+            "activation": null,
+            "min_peak_value": 0.1,
+            "pooling_scale": 13,
+            "out_image_shape": [
+                512,
+                512
+            ],
+            "supression_range": 7
+        },
+        "weigths_path": "/home/histology_data/storage/pretraining_simclr_weights/third_best_checkpoint.pth.tar",
+        "class_separator": null,
+        "class_labels_map": {
+            "0": 0,
+            "1": 1,
+            "2": 0
+        },
+        "input_shape": [
+            512,
+            512
+        ],
+        "extractor_params": {
+            "pooling_scale": 23,
+            "min_peak_value": 0.065,
+            "supression_range": 15.973
+        }
+    },
+    "data": {
+        "split_info": {
+            "is_precomp": false,
+            "num_classes": 3,
+            "pseudostrat": true,
+            "split_type": "trainval",
+            "train_size": 0.85
+        },
+        "dataset_dir": "/home/histology_data/mixed_datasets/endonuke_and_staining_ds/trainvaltest",
+        "save_console_logs": true,
+        "workers": 2,
+        "heatmaps_sigma": 7.62,
+        "norm_mean": [
+            168.4768651762335,
+            151.98198018586004,
+            142.49870261869515
+        ],
+        "norm_std": [
+            57.9426281280521,
+            62.13757452962378,
+            62.99750308796678
+        ],
+        "image_shape": [
+            512,
+            512
+        ]
+    },
+    "train": {
+        "batch_size": 16,
+        "num_epochs": 100,
+        "log_every": 1,
+        "verbose": true,
+        "seed": 42,
+        "checkpoint_every": 1,
+        "batches_for_print": 5,
+        "train_size": 0.8,
+        "save_dir": "./experiments",
+        "experiment_name": "3rd_config_Unet++_new",
+        "checkpoints_dir": "checkpoints",
+        "logging_dir": "logs",
+        "overwrite": true,
+        "interpolation": 1,
+        "num_iterations": 60,
+        "num_init_points": 5,
+        "params_bounds": {
+            "min_peak_value": [
+                0.01,
+                0.99
+            ],
+            "half_pooling_scale": [
+                3.0,
+                20.0
+            ],
+            "supression_range": [
+                3.0,
+                30.0
+            ]
+        },
+        "augmentations": {
+            "border_mode": "BORDER_REFLECT_101",
+            "mosiac_bbox_size_thresh": 0.1,
+            "noise_var": 0.1,
+            "p_flip_hor": 0.8,
+            "p_flip_vert": 0.8,
+            "p_hsv": 0.5,
+            "p_mixup": 0,
+            "p_mosaic": 0,
+            "p_noise": 0.7,
+            "p_perspective": 0.2,
+            "p_rotate": 0.2,
+            "p_scale": 0.2,
+            "p_shift": 0.2,
+            "perspective_factor": 0.01,
+            "rotate_angle": 1,
+            "scale_factor": 0.05,
+            "shift_factor": 0.02
+        },
+        "loss": {
+            "type": "Huber",
+            "class_weights": [
+                1.0,
+                4.0
+            ],
+            "normalize_weights": true,
+            "delta": 2.0
+        },
+        "train_metric": {
+            "type": "mAP",
+            "similarity_scale": 15.24,
+            "sim_threshold": 0.5,
+            "class_labels": [
+                0,
+                1
+            ]
+        },
+        "valid_metric": {
+            "type": "mAP",
+            "similarity_scale": 15.24,
+            "sim_threshold": 0.5,
+            "class_labels": [
+                0,
+                1
+            ]
+        },
+        "optimizer": {
+            "type": "Adam",
+            "kwargs": {
+                "lr": 0.0005,
+                "betas": [
+                    0.9,
+                    0.999
+                ],
+                "weight_decay": 0,
+                "amsgrad": true
+            }
+        },
+        "scheduler": {
+            "type": null
+        },
+        "deterministic": false,
+        "tracker": "tensorboard",
+        "engine": "gpu"
+    },
+    "eval": {
+        "checkpoints": "best",
+        "metric": {
+            "type": "mAP",
+            "similarity_scale": 15.24,
+            "sim_threshold": 0.5,
+            "class_labels": [
+                0,
+                1
+            ]
+        }
+    }
+}
